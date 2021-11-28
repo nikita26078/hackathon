@@ -11,12 +11,12 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import ru.otkrytie.startinvest.R
-import ru.otkrytie.startinvest.data.models.Comment
 import ru.otkrytie.startinvest.databinding.InvestViewFragmentBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,6 +25,7 @@ import kotlin.collections.ArrayList
 class InvestmentViewFragment : Fragment() {
     private var _binding: InvestViewFragmentBinding? = null
     private lateinit var adapter: CommentsListAdapter
+    private lateinit var viewModel: InvestmentCommentViewModel
 
     private val binding get() = _binding!!
 
@@ -35,6 +36,8 @@ class InvestmentViewFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = CommentsListAdapter()
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+            .create(InvestmentCommentViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -59,7 +62,7 @@ class InvestmentViewFragment : Fragment() {
         data.setValueTextSize(11f)
 
         binding.tvTitle.text = "Zoom"
-        binding.tvDescription.text = "\$222,95 (+7,13%)\n"
+        binding.tvDescription.text = "\$222,95 (-7,13%)\n"
 
         val chart = binding.chart
 
@@ -78,15 +81,6 @@ class InvestmentViewFragment : Fragment() {
         chart.data = data
         chart.invalidate()
 
-        val testCommentData = ArrayList<Comment>()
-        for (i in 1..15) {
-            val news = Comment("", "Ivan Petrov",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt")
-            testCommentData.add(news)
-        }
-        adapter.setItems(testCommentData)
-        adapter.notifyDataSetChanged()
-
         binding.rvComments.adapter = adapter
 
         val actionBar = (activity as AppCompatActivity).supportActionBar
@@ -94,6 +88,11 @@ class InvestmentViewFragment : Fragment() {
             actionBar.setDisplayHomeAsUpEnabled(true)
             actionBar.setTitle(R.string.title_investments)
         }
+
+        viewModel.allData.observe(viewLifecycleOwner, {
+            adapter.setItems(it)
+            adapter.notifyDataSetChanged()
+        })
     }
 
     override fun onDestroyView() {

@@ -6,11 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.otkrytie.startinvest.R
-import ru.otkrytie.startinvest.data.models.News
 import ru.otkrytie.startinvest.databinding.ProfileFragmentBinding
 import ru.otkrytie.startinvest.ui.news.NewsViewFragment
 import ru.otkrytie.startinvest.ui.settings.SettingsFragment
@@ -18,7 +17,7 @@ import ru.otkrytie.startinvest.ui.settings.SettingsFragment
 class ProfileFragment : Fragment() {
     private var _binding: ProfileFragmentBinding? = null
     private lateinit var adapter: PostListAdapter
-    private val profileViewModel: ProfileViewModel by viewModels()
+    private lateinit var viewModel: ProfileViewModel
 
     private val binding get() = _binding!!
 
@@ -35,14 +34,8 @@ class ProfileFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         })
-        val testData = ArrayList<News>()
-        for (i in 1..15) {
-            val news = News("", "John Smith",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt")
-            testData.add(news)
-        }
-        adapter.setItems(testData)
-        adapter.notifyDataSetChanged()
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application).create(
+            ProfileViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -82,6 +75,11 @@ class ProfileFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+        viewModel.allNewsData.observe(viewLifecycleOwner, {
+            binding.tvPostCount.text = it.size.toString()
+            adapter.setItems(it)
+            adapter.notifyDataSetChanged()
+        })
     }
 
 }

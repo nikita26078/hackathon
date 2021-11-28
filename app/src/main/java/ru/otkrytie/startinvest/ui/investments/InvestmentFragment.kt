@@ -8,21 +8,20 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.otkrytie.startinvest.R
-import ru.otkrytie.startinvest.data.models.Investment
 import ru.otkrytie.startinvest.databinding.InvestFragmentBinding
 import ru.otkrytie.startinvest.utils.Constants
 
 
 class InvestmentFragment : Fragment() {
-    private val dashboardViewModel: InvestmentViewModel by viewModels()
     private var _binding: InvestFragmentBinding? = null
     private lateinit var adapter: InvestmentsListAdapter
-    private lateinit var sp : SharedPreferences
+    private lateinit var sp: SharedPreferences
+    private lateinit var viewModel: InvestmentViewModel
 
     private val binding get() = _binding!!
 
@@ -35,14 +34,8 @@ class InvestmentFragment : Fragment() {
                 .commit()
         })
         sp = PreferenceManager.getDefaultSharedPreferences(context)
-
-        val testNewsData = ArrayList<Investment>()
-        for (i in 1..15) {
-            val inv = Investment(0)
-            testNewsData.add(inv)
-        }
-        adapter.setItems(testNewsData)
-        adapter.notifyDataSetChanged()
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+            .create(InvestmentViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -88,6 +81,11 @@ class InvestmentFragment : Fragment() {
             actionBar.setDisplayHomeAsUpEnabled(false)
             actionBar.setTitle(R.string.title_investments)
         }
+
+        viewModel.allData.observe(viewLifecycleOwner, {
+            adapter.setItems(it)
+            adapter.notifyDataSetChanged()
+        })
     }
 
     override fun onDestroyView() {

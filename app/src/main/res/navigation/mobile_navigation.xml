@@ -20,5 +20,5 @@
     <fragment
         android:id="@+id/navigation_listinvest"
         android:name="ru.otkrytie.startinvest.ui.profile.ProfileFragment"
-        android:label="@string/title_notifications" />
+        android:label="@string/title_profile" />
 </navigation>

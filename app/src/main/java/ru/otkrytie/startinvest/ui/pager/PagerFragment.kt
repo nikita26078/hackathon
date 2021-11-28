@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
@@ -16,7 +15,6 @@ import ru.otkrytie.startinvest.R
 import ru.otkrytie.startinvest.databinding.PagerFragmentBinding
 
 internal class PagerFragment : Fragment() {
-    private val pagerViewModel: PagerViewModel by activityViewModels()
     private var _binding: PagerFragmentBinding? = null
 
     private val binding get() = _binding!!

@@ -16,7 +16,7 @@
 
     <string name="title_home">News</string>
     <string name="title_investments">Investments</string>
-    <string name="title_notifications">Account</string>
+    <string name="title_profile">Profile</string>
     <string name="text">Text</string>
 
     <string name="pref_theme_auto_battery">Auto, by Battery Saver</string>

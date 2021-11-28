@@ -19,8 +19,8 @@ class InvestmentsListAdapter(private val onClickListener: OnClickListener) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         with(holder) {
-            binding.tvTitle.text = "Zoom"
-            binding.tvDescription.text = "\$222,95 (+7,13%)\n"
+            binding.tvTitle.text = item.title
+            binding.tvDescription.text = item.desc
             itemView.setOnClickListener {
                 onClickListener.onClick(item)
             }

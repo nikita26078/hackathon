@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.otkrytie.startinvest.R
-import ru.otkrytie.startinvest.data.models.News
-import ru.otkrytie.startinvest.data.models.Subscription
 import ru.otkrytie.startinvest.databinding.NewsFragmentBinding
 import ru.otkrytie.startinvest.ui.profile.PostListAdapter
 
 class NewsFragment : Fragment() {
     private var _binding: NewsFragmentBinding? = null
+    private lateinit var viewModel: NewsViewModel
     private lateinit var newsListAdapter: PostListAdapter
     private lateinit var subsListAdapter: SubsListAdapter
 
@@ -34,24 +34,7 @@ class NewsFragment : Fragment() {
                 .commit()
         })
         subsListAdapter = SubsListAdapter()
-
-        val testNewsData = ArrayList<News>()
-        for (i in 1..15) {
-            val news = News("", "John Smith",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt")
-            testNewsData.add(news)
-        }
-        newsListAdapter.setItems(testNewsData)
-        newsListAdapter.notifyDataSetChanged()
-
-
-        val testSubsData = ArrayList<Subscription>()
-        for (i in 1..15) {
-            val subs = Subscription("", "John Smith")
-            testSubsData.add(subs)
-        }
-        subsListAdapter.setItems(testSubsData)
-        subsListAdapter.notifyDataSetChanged()
+        viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application).create(NewsViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -82,6 +65,16 @@ class NewsFragment : Fragment() {
 
         val subsList = binding.rvSubs
         subsList.adapter = subsListAdapter
+
+        viewModel.allNewsData.observe(viewLifecycleOwner, {
+            newsListAdapter.setItems(it)
+            newsListAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.allSubsData.observe(viewLifecycleOwner, {
+            subsListAdapter.setItems(it)
+            subsListAdapter.notifyDataSetChanged()
+        })
     }
 
 }
