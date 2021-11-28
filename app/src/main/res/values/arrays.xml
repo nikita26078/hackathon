@@ -1,0 +1,20 @@
+<resources>
+    <string-array name="pref_theme_entries">
+        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_night</item>
+        <item>@string/pref_theme_auto_time</item>
+    </string-array>
+    <string-array name="pref_theme_values" translatable="false">
+        <item>light</item>
+        <item>dark</item>
+        <item>auto-time</item>
+    </string-array>
+    <string-array name="categories">
+        <item>@string/stocks</item>
+        <item>@string/bonds</item>
+        <item>@string/currency</item>
+        <item>@string/derivatives</item>
+        <item>@string/precious_metals</item>
+        <item>@string/funds</item>
+    </string-array>
+</resources>
