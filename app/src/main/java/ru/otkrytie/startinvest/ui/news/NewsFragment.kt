@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.otkrytie.startinvest.R
 import ru.otkrytie.startinvest.databinding.NewsFragmentBinding
+import ru.otkrytie.startinvest.ui.investments.InvestmentViewFragment
 import ru.otkrytie.startinvest.ui.profile.PostListAdapter
 
 class NewsFragment : Fragment() {
@@ -18,11 +19,18 @@ class NewsFragment : Fragment() {
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsListAdapter: PostListAdapter
     private lateinit var subsListAdapter: SubsListAdapter
+    private var userId = 0;
 
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = NewsFragment()
+        val ITEM_ID = "item_id"
+
+        fun newInstance(id: Int) = InvestmentViewFragment().apply {
+            arguments = Bundle(1).apply {
+                putInt(ITEM_ID, id)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +43,10 @@ class NewsFragment : Fragment() {
         })
         subsListAdapter = SubsListAdapter()
         viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application).create(NewsViewModel::class.java)
+        userId = requireArguments().getInt(InvestmentViewFragment.ITEM_ID, -1)
+        if (userId == -1) {
+            userId = 0
+        }
     }
 
     override fun onCreateView(

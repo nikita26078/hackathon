@@ -26,11 +26,18 @@ class InvestmentViewFragment : Fragment() {
     private var _binding: InvestViewFragmentBinding? = null
     private lateinit var adapter: CommentsListAdapter
     private lateinit var viewModel: InvestmentCommentViewModel
+    private var userId = 0;
 
     private val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = InvestmentViewFragment()
+        val ITEM_ID = "item_id"
+
+        fun newInstance(id: Int) = InvestmentViewFragment().apply {
+            arguments = Bundle(1).apply {
+                putInt(ITEM_ID, id)
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +45,10 @@ class InvestmentViewFragment : Fragment() {
         adapter = CommentsListAdapter()
         viewModel = ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
             .create(InvestmentCommentViewModel::class.java)
+        userId = requireArguments().getInt(ITEM_ID, -1)
+        if (userId == -1) {
+            userId = 0
+        }
     }
 
     override fun onCreateView(
