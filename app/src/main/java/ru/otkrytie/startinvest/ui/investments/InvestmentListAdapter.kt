@@ -2,13 +2,14 @@ package ru.otkrytie.startinvest.ui.investments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.otkrytie.startinvest.data.models.Investment
 import ru.otkrytie.startinvest.databinding.InvestListItemBinding
 
-class InvestmentsListAdapter(private val onClickListener: OnClickListener) :
-    RecyclerView.Adapter<InvestmentsListAdapter.ViewHolder>() {
-    private var list: List<Investment> = ArrayList()
+class InvestmentListAdapter(private val onClickListener: OnClickListener) :
+    RecyclerView.Adapter<InvestmentListAdapter.ViewHolder>() {
+    private var list = ArrayList<Investment>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -30,7 +31,11 @@ class InvestmentsListAdapter(private val onClickListener: OnClickListener) :
     override fun getItemCount() = list.size
 
     fun setItems(items: List<Investment>) {
-        list = items
+        val diffCallback = InvestmentDiffCallback(list, items)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        list.clear()
+        list.addAll(items)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class OnClickListener(val clickListener: (investment: Investment) -> Unit) {

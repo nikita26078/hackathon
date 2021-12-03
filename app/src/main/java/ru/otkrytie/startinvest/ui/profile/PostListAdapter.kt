@@ -3,13 +3,14 @@ package ru.otkrytie.startinvest.ui.profile
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.otkrytie.startinvest.data.models.News
 import ru.otkrytie.startinvest.databinding.ListRowPostsBinding
 
 class PostListAdapter(private val user: Boolean, private val onClickListener: OnClickListener) :
     RecyclerView.Adapter<PostListAdapter.ViewHolder>() {
-    private var list: List<News> = ArrayList()
+    private var list = ArrayList<News>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -35,12 +36,14 @@ class PostListAdapter(private val user: Boolean, private val onClickListener: On
         }
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount() = list.size
 
     fun setItems(items: List<News>) {
-        list = items
+        val diffCallback = PostDiffCallback(list, items)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        list.clear()
+        list.addAll(items)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class OnClickListener(val clickListener: (news: News) -> Unit) {

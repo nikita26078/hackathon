@@ -2,12 +2,13 @@ package ru.otkrytie.startinvest.ui.news
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.otkrytie.startinvest.data.models.Subscription
 import ru.otkrytie.startinvest.databinding.ListRowSubsBinding
 
 class SubsListAdapter : RecyclerView.Adapter<SubsListAdapter.ViewHolder>() {
-    private var list: List<Subscription> = ArrayList()
+    private var list = ArrayList<Subscription>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListRowSubsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,12 +22,14 @@ class SubsListAdapter : RecyclerView.Adapter<SubsListAdapter.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+    override fun getItemCount() = list.size
 
     fun setItems(items: List<Subscription>) {
-        list = items
+        val diffCallback = SubsDiffCallback(list, items)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        list.clear()
+        list.addAll(items)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(val binding: ListRowSubsBinding) : RecyclerView.ViewHolder(binding.root)

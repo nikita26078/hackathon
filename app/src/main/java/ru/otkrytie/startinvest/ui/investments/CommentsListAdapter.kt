@@ -2,13 +2,14 @@ package ru.otkrytie.startinvest.ui.investments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import ru.otkrytie.startinvest.data.models.Comment
 import ru.otkrytie.startinvest.databinding.ListRowCommentsBinding
 
 class CommentsListAdapter() :
     RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
-    private var list: List<Comment> = ArrayList()
+    private var list = ArrayList<Comment>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -27,7 +28,11 @@ class CommentsListAdapter() :
     override fun getItemCount() = list.size
 
     fun setItems(items: List<Comment>) {
-        list = items
+        val diffCallback = CommentsDiffCallback(list, items)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        list.clear()
+        list.addAll(items)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(val binding: ListRowCommentsBinding) : RecyclerView.ViewHolder(binding.root)

@@ -19,7 +19,7 @@ import ru.otkrytie.startinvest.utils.Constants
 
 class InvestmentFragment : Fragment() {
     private var _binding: InvestFragmentBinding? = null
-    private lateinit var adapter: InvestmentsListAdapter
+    private lateinit var adapter: InvestmentListAdapter
     private lateinit var sp: SharedPreferences
     private lateinit var viewModel: InvestmentViewModel
 
@@ -27,9 +27,9 @@ class InvestmentFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = InvestmentsListAdapter(InvestmentsListAdapter.OnClickListener {
+        adapter = InvestmentListAdapter(InvestmentListAdapter.OnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, InvestmentViewFragment.newInstance())
+                .replace(R.id.nav_host_fragment, InvestmentViewFragment.newInstance(it.id))
                 .addToBackStack(null)
                 .commit()
         })
@@ -84,7 +84,6 @@ class InvestmentFragment : Fragment() {
 
         viewModel.allData.observe(viewLifecycleOwner, {
             adapter.setItems(it)
-            adapter.notifyDataSetChanged()
         })
     }
 

@@ -102,7 +102,6 @@ class InvestmentViewFragment : Fragment() {
 
         viewModel.allData.observe(viewLifecycleOwner, {
             adapter.setItems(it)
-            adapter.notifyDataSetChanged()
         })
     }
 

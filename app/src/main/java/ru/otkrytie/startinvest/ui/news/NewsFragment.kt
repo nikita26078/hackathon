@@ -80,12 +80,10 @@ class NewsFragment : Fragment() {
 
         viewModel.allNewsData.observe(viewLifecycleOwner, {
             newsListAdapter.setItems(it)
-            newsListAdapter.notifyDataSetChanged()
         })
 
         viewModel.allSubsData.observe(viewLifecycleOwner, {
             subsListAdapter.setItems(it)
-            subsListAdapter.notifyDataSetChanged()
         })
     }
 

@@ -78,7 +78,6 @@ class ProfileFragment : Fragment() {
         viewModel.allNewsData.observe(viewLifecycleOwner, {
             binding.tvPostCount.text = it.size.toString()
             adapter.setItems(it)
-            adapter.notifyDataSetChanged()
         })
     }
 
