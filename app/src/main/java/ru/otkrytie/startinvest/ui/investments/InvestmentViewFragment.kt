@@ -26,12 +26,12 @@ class InvestmentViewFragment : Fragment() {
     private var _binding: InvestViewFragmentBinding? = null
     private lateinit var adapter: CommentsListAdapter
     private lateinit var viewModel: InvestmentCommentViewModel
-    private var userId = 0;
+    private var userId = 0
 
     private val binding get() = _binding!!
 
     companion object {
-        val ITEM_ID = "item_id"
+        const val ITEM_ID = "item_id"
 
         fun newInstance(id: Int) = InvestmentViewFragment().apply {
             arguments = Bundle(1).apply {
@@ -121,7 +121,7 @@ class InvestmentViewFragment : Fragment() {
     class BarChartXAxisValueFormatter : IndexAxisValueFormatter() {
         override fun getFormattedValue(value: Float): String? {
             val timeMilliseconds = Date(value.toLong())
-            val dateTimeFormat = SimpleDateFormat("dd.MM")
+            val dateTimeFormat = SimpleDateFormat("dd.MM", Locale.US)
             return dateTimeFormat.format(timeMilliseconds)
         }
     }

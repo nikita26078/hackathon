@@ -49,7 +49,7 @@ class LoginFragment : Fragment() {
         binding.btLogin.setOnClickListener {
             val sp = PreferenceManager.getDefaultSharedPreferences(context)
             sp.edit().putBoolean(Constants.PREF_IS_LOGGED, true).apply()
-            parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             parentFragmentManager.beginTransaction()
                 .replace(R.id.container, PagerFragment.newInstance())
                 .commit()

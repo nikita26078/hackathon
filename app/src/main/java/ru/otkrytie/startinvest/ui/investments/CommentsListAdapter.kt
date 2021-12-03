@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.otkrytie.startinvest.data.models.Comment
 import ru.otkrytie.startinvest.databinding.ListRowCommentsBinding
 
-class CommentsListAdapter() :
+class CommentsListAdapter :
     RecyclerView.Adapter<CommentsListAdapter.ViewHolder>() {
     private var list = ArrayList<Comment>()
 

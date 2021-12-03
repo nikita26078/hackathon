@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
 
         adapter = PostListAdapter(true, PostListAdapter.OnClickListener {
             parentFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, NewsViewFragment.newInstance())
+                .replace(R.id.nav_host_fragment, NewsViewFragment.newInstance(it.id))
                 .addToBackStack(null)
                 .commit()
         })
